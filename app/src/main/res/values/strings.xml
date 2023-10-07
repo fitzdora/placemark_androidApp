@@ -2,6 +2,7 @@
     <string name="app_name">Placemark</string>
     <string name="button_addPlacemark">Add Placemark</string>
     <string name="button_savePlacemark">Save Placemark</string>
+    <string name="button_addImage">Add Image</string>
     <string name="menu_addPlacemark">Add</string>
     <string name="hint_placemarkTitle">Placemark Title</string>
     <string name="hint_placemarkDescription">Description </string>
