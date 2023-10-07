@@ -21,11 +21,11 @@ class PlacemarkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         var edit = false
 
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
@@ -39,6 +39,11 @@ class PlacemarkActivity : AppCompatActivity() {
             binding.description.setText(placemark.description)
             binding.btnAdd.setText(R.string.button_savePlacemark)
         }
+
+        binding.chooseImage.setOnClickListener {
+            i("Select image")
+        }
+
 
         binding.btnAdd.setOnClickListener() {
             placemark.title = binding.placemarkTitle.text.toString()
@@ -54,6 +59,7 @@ class PlacemarkActivity : AppCompatActivity() {
                     app.placemarks.create(placemark.copy())
                 }
             }
+            i("add Button Pressed: $placemark")
             setResult(RESULT_OK)
             finish()
         }
