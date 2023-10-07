@@ -8,4 +8,5 @@
     <string name="hint_placemarkDescription">Description </string>
     <string name="menu_cancelPlacemark">Cancel</string>
     <string name="enter_placemark_title">Please enter a Placemark Title</string>
+    <string name="select_placemark_image">Select placemark image</string>
 </resources>
