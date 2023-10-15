@@ -14,6 +14,7 @@ import org.wit.placemark.R
 import org.wit.placemark.databinding.ActivityPlacemarkBinding
 import org.wit.placemark.helpers.showImagePicker
 import org.wit.placemark.main.MainApp
+import org.wit.placemark.models.Location
 import org.wit.placemark.models.PlacemarkModel
 import timber.log.Timber.Forest.i
 
@@ -64,7 +65,8 @@ class PlacemarkActivity : AppCompatActivity() {
 
         binding.placemarkLocation.setOnClickListener {
             i("Set location Pressed")
-            val launcherIntent = Intent(this, MapActivity::class.java)
+            val location = Location(51.8530, -8.294286, 15f)
+            val launcherIntent = Intent(this, MapActivity::class.java).putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
 
