@@ -26,6 +26,7 @@ class PlacemarkActivity : AppCompatActivity() {
 
     var placemark = PlacemarkModel()
     lateinit var app: MainApp
+    var location = Location(52.245696, -7.139102, 15f)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +66,6 @@ class PlacemarkActivity : AppCompatActivity() {
 
         binding.placemarkLocation.setOnClickListener {
             i("Set location Pressed")
-            val location = Location(51.8530, -8.294286, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java).putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
@@ -127,6 +127,17 @@ class PlacemarkActivity : AppCompatActivity() {
 
     private fun registerMapCallback() {
         mapIntentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-        {i("Map Loaded")}
+        { result ->
+            when(result.resultCode){
+                RESULT_OK -> {
+                    if (result.data != null) {
+                        i("Got Location ${result.data.toString()}")
+                        location = result.data!!.extras?.getParcelable("location")!!
+                        i("Location == $location")
+                    } //end of if
+                }
+                RESULT_CANCELED -> { } else -> { }
+            }
+        }
     }
 }
