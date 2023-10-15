@@ -35,6 +35,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val setu = LatLng(52.245696, -7.139102)
         mMap.addMarker(MarkerOptions().position(setu).title("Marker in Waterford"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(setu, 16f))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(setu,16f))
     }
 }
