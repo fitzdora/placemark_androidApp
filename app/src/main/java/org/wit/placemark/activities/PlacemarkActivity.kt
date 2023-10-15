@@ -15,13 +15,13 @@ import org.wit.placemark.databinding.ActivityPlacemarkBinding
 import org.wit.placemark.helpers.showImagePicker
 import org.wit.placemark.main.MainApp
 import org.wit.placemark.models.PlacemarkModel
-import timber.log.Timber
 import timber.log.Timber.Forest.i
 
 class PlacemarkActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlacemarkBinding
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
 
     var placemark = PlacemarkModel()
     lateinit var app: MainApp
@@ -41,6 +41,7 @@ class PlacemarkActivity : AppCompatActivity() {
         i("Placemark Activity started...")
 
         registerImagePickerCallback()
+        registerMapCallback()
 
         if (intent.hasExtra("placemark_edit")) {
             edit = true
@@ -61,8 +62,10 @@ class PlacemarkActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
-        binding.placemarkLocation.setOnClickListener{
+        binding.placemarkLocation.setOnClickListener {
             i("Set location Pressed")
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
         }
 
 
@@ -118,5 +121,10 @@ class PlacemarkActivity : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {i("Map Loaded")}
     }
 }
