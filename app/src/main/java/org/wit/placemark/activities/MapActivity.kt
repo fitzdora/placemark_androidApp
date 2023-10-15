@@ -9,6 +9,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.wit.placemark.R
 import org.wit.placemark.databinding.ActivityMapsBinding
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
