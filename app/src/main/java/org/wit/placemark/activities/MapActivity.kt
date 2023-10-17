@@ -16,7 +16,7 @@ import org.wit.placemark.R
 import org.wit.placemark.databinding.ActivityMapsBinding
 import org.wit.placemark.models.Location
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -55,12 +55,17 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
             .draggable(true)
             .position(loc)
         map.addMarker(options)
+        // Enable zoom controls
+        map.uiSettings.isZoomControlsEnabled = true
         map.setOnMarkerDragListener(this)
+        map.setOnMarkerClickListener(this)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
 
-    override fun onMarkerDrag(p0: Marker) {
-        TODO("Not yet implemented")
+    override fun onMarkerDrag(marker: Marker) {
+        location.lat = marker.position.latitude
+        location.lng = marker.position.longitude
+        location.zoom = map.cameraPosition.zoom
     }
 
     override fun onMarkerDragEnd(marker: Marker) {
@@ -69,8 +74,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
         location.zoom = map.cameraPosition.zoom
     }
 
-    override fun onMarkerDragStart(p0: Marker) {
-        TODO("Not yet implemented")
+    override fun onMarkerDragStart(marker: Marker) {
+        location.lat = marker.position.latitude
+        location.lng = marker.position.longitude
+        location.zoom = map.cameraPosition.zoom
     }
 
     override fun  onBackPressed() {
@@ -79,5 +86,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
             super.onBackPressed()
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(location.lat, location.lng)
+        marker.snippet = "GPS : $loc"
+        return false
     }
 }

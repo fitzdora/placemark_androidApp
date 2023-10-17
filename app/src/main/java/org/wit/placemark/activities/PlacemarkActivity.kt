@@ -21,12 +21,11 @@ import timber.log.Timber.Forest.i
 class PlacemarkActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlacemarkBinding
-    private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
-    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-
     var placemark = PlacemarkModel()
     lateinit var app: MainApp
-    var location = Location(52.245696, -7.139102, 15f)
+    private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    // var location = Location(52.245696, -7.139102, 15f)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +41,6 @@ class PlacemarkActivity : AppCompatActivity() {
         app = application as MainApp
         i("Placemark Activity started...")
 
-        registerImagePickerCallback()
-        registerMapCallback()
 
         if (intent.hasExtra("placemark_edit")) {
             edit = true
@@ -54,22 +51,10 @@ class PlacemarkActivity : AppCompatActivity() {
             Picasso.get()
                 .load(placemark.image)
                 .into(binding.placemarkImage)
-            if(placemark.image != Uri.EMPTY){
+            if (placemark.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_placemark_image)
             }
         }
-
-        binding.chooseImage.setOnClickListener {
-            i("Select image")
-            showImagePicker(imageIntentLauncher)
-        }
-
-        binding.placemarkLocation.setOnClickListener {
-            i("Set location Pressed")
-            val launcherIntent = Intent(this, MapActivity::class.java).putExtra("location", location)
-            mapIntentLauncher.launch(launcherIntent)
-        }
-
 
         binding.btnAdd.setOnClickListener() {
             placemark.title = binding.placemarkTitle.text.toString()
@@ -89,6 +74,27 @@ class PlacemarkActivity : AppCompatActivity() {
             setResult(RESULT_OK)
             finish()
         }
+
+        binding.chooseImage.setOnClickListener {
+            i("Select image")
+            showImagePicker(imageIntentLauncher)
+        }
+
+        binding.placemarkLocation.setOnClickListener {
+            i("Set location Pressed")
+            val location = Location(52.245696, -7.139102, 15f)
+            if (placemark.zoom != 0f) {
+                location.lat = placemark.lat
+                location.lng = placemark.lng
+                location.zoom = placemark.zoom
+            }
+            val launcherIntent =
+                Intent(this, MapActivity::class.java).putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+        registerImagePickerCallback()
+        registerMapCallback()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -132,8 +138,11 @@ class PlacemarkActivity : AppCompatActivity() {
                 RESULT_OK -> {
                     if (result.data != null) {
                         i("Got Location ${result.data.toString()}")
-                        location = result.data!!.extras?.getParcelable("location")!!
+                        val location = result.data!!.extras?.getParcelable<Location>("location")!!
                         i("Location == $location")
+                        placemark.lat = location.lat
+                        placemark.lng = location.lng
+                        placemark.zoom = location.zoom
                     } //end of if
                 }
                 RESULT_CANCELED -> { } else -> { }
