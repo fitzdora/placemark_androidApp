@@ -42,8 +42,25 @@ class PlacemarkJSONStore(private val context: Context) : PlacemarkStore {
 
 
     override fun update(placemark: PlacemarkModel) {
-        // todo
+        val placemarksList = findAll() as ArrayList<PlacemarkModel>
+        var foundPlacemark: PlacemarkModel? = placemarksList.find { p -> p.id == placemark.id }
+        if (foundPlacemark != null){
+            foundPlacemark.title = placemark.title
+            foundPlacemark.description = placemark.description
+            foundPlacemark.image = placemark.image
+            foundPlacemark.lat = placemark.lat
+            foundPlacemark.lng = placemark.lng
+            foundPlacemark.zoom = placemark.zoom
+            logAll()
+        }
+        serialize()
     }
+
+    override fun delete(placemark: PlacemarkModel) {
+        placemarks.remove(placemark)
+        serialize()
+    }
+
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(placemarks, listType)
@@ -60,7 +77,7 @@ class PlacemarkJSONStore(private val context: Context) : PlacemarkStore {
     }
 }
 
-class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
+class UriParser : JsonDeserializer<Uri>, JsonSerializer<Uri> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,

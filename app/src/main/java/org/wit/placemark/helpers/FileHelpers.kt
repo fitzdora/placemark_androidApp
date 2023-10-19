@@ -2,7 +2,7 @@ package org.wit.placemark.helpers
 
 import android.content.Context
 import timber.log.Timber.Forest.e
-import java.io
+import java.io.*
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -46,7 +46,7 @@ fun read(context: Context, fileName: String) : String {
 
 }
 
-fun exist(context: Context, fileName: String) : Boolean {
+fun exists(context: Context, fileName: String) : Boolean {
     val file = context.getFileStreamPath(fileName)
     return  file.exists()
 
