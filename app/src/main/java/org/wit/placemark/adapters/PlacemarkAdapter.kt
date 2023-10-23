@@ -8,7 +8,7 @@ import org.wit.placemark.databinding.CardPlacemarkBinding
 import org.wit.placemark.models.PlacemarkModel
 
 interface PlacemarkListener {
-    fun onPlacemarkClick(placemark: PlacemarkModel)
+    fun onPlacemarkClick(placemark: PlacemarkModel, position: Int)
 }
 
 class PlacemarkAdapter constructor(private var placemarks: List<PlacemarkModel>, private val listener: PlacemarkListener) :
@@ -35,7 +35,7 @@ class PlacemarkAdapter constructor(private var placemarks: List<PlacemarkModel>,
             binding.description.text = placemark.description
             Picasso.get().load(placemark.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener {
-                listener.onPlacemarkClick(placemark)
+                listener.onPlacemarkClick(placemark, adapterPosition)
             }
         }
     }

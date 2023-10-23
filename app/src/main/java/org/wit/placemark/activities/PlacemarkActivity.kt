@@ -26,12 +26,12 @@ class PlacemarkActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
     // var location = Location(52.245696, -7.139102, 15f)
-
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var edit = false
+        edit = false
 
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -57,7 +57,8 @@ class PlacemarkActivity : AppCompatActivity() {
         }
 
         binding.btnAdd.setOnClickListener() {
-            placemark.title = binding.placemarkTitle.text.toString()
+            i("PlacemarkActivity","Add button clicked") //log the button click
+           try{ placemark.title = binding.placemarkTitle.text.toString()
             placemark.description = binding.description.text.toString()
             if (placemark.title.isEmpty()) {
                 Snackbar
@@ -73,6 +74,9 @@ class PlacemarkActivity : AppCompatActivity() {
             i("add Button Pressed: $placemark")
             setResult(RESULT_OK)
             finish()
+        } catch (e: Exception) {
+            i("error creating placemark: $e")
+        }
         }
 
         binding.chooseImage.setOnClickListener {
@@ -99,21 +103,20 @@ class PlacemarkActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_placemark, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) : Boolean {
         when (item.itemId) {
-            R.id.item_delete {
+            R.id.item_delete -> {
+                setResult(99) // might need to changed this back to 99
                 app.placemarks.delete(placemark)
-                setResult(RESULT_OK)
                 finish()
             }
-            R.id.item_cancel -> {
-                finish()
-            }
+            R.id.item_cancel -> { finish() }
         }
-        return  super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun registerImagePickerCallback() {

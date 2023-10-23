@@ -33,7 +33,7 @@ class PlacemarkMemStore : PlacemarkStore {
         }
     }
 
-    override fun delete(placemark: PlacemarkModel){
+    override fun delete(placemark: PlacemarkModel) {
         placemarks.remove(placemark)
     }
 
