@@ -49,7 +49,7 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
                 getResult.launch(launcherIntent)
             }
             R.id.item_map -> {
-                val launcherIntent = Intent(this, PlacemarkActivity::class.java)
+                val launcherIntent = Intent(this, PlacemarkMapsActivity::class.java)
                 mapIntentLauncher.launch(launcherIntent)
             }
         }
