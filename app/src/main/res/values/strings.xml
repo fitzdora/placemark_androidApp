@@ -13,4 +13,6 @@
     <string name="select_placemark_image">Select placemark image</string>
     <string name="button_location">Set Location</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_placemark_maps">Map of all Placemarks</string>
+
 </resources>
