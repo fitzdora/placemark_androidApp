@@ -28,5 +28,31 @@ class PlacemarkMapsActivity : AppCompatActivity() {
         contentBinding.mapView.onCreate(savedInstanceState)
 
     }
+    override fun onDestroy(){
+        super.onDestroy()
+        contentBinding.mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        contentBinding.mapView.onLowMemory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        contentBinding.mapView.onPause()
+    }
+
+    override fun onResume(){
+        super.onResume()
+        contentBinding.mapView.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        contentBinding.mapView.onSaveInstanceState(outState)
+    }
+
+
 
 }
